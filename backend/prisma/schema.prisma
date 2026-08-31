@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum WorkItemStatus {
+  RECEIVED
+  ANALYSING
+  READY_FOR_REVIEW
+  COMPLETED
+  FAILED
+}
+
+model WorkItem {
+  id                String         @id @default(uuid()) @db.Uuid
+  externalId        String         @unique
+  title             String
+  description       String
+  status            WorkItemStatus
+  category          String?
+  priority          String?
+  summary           String?
+  recommendedAction String?
+  analysisError     String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+}
